@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Weather App</h1>
+
+    <!-- Weather form -->
+    <form method="POST">
+        <label for="city">Enter city name:</label>
+        <input type="text" id="city" name="city" required>
+
+        <label for="units">Choose units:</label>
+        <select id="units" name="units">
+            <option value="metric">Celsius</option>
+            <option value="imperial">Fahrenheit</option>
+            <option value="standard">Kelvin</option>
+        </select>
+
+        <button type="submit">Get Weather</button>
+    </form>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if weather_data %}
+        <h2>Weather in {{ weather_data.name }}</h2>
+        <p>Temperature: {{ weather_data.main.temp }}°</p>
+        <p>Weather: {{ weather_data.weather[0].description }}</p>
+
+        <!-- Weather Icon -->
+        <img src="http://openweathermap.org/img/wn/{{ weather_data.weather[0].icon }}@2x.png" alt="Weather Icon">
+
+        <p>Humidity: {{ weather_data.main.humidity }}%</p>
+        <p>Wind Speed: {{ weather_data.wind.speed }} m/s</p>
+        <p>Pressure: {{ weather_data.main.pressure }} hPa</p>
+        <p>Cloudiness: {{ weather_data.clouds.all }}%</p>
+        <p>Sunrise: {{ weather_data.sys.sunrise | datetime }}</p>
+        <p>Sunset: {{ weather_data.sys.sunset | datetime }}</p>
+    {% endif %}
+
+    {% if forecast_data %}
+        <h2>5-Day Forecast</h2>
+        <ul>
+            {% for forecast in forecast_data.list %}
+                <li>
+                    {{ forecast.dt_txt }}: {{ forecast.main.temp }}° {{ forecast.weather[0].description }}
+                    <!-- Weather icon in forecast -->
+                    <img src="http://openweathermap.org/img/wn/{{ forecast.weather[0].icon }}@2x.png" alt="Weather Icon">
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
