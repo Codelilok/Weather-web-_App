@@ -44,7 +44,7 @@ def index():
 def format_datetime(value):
     return datetime.fromtimestamp(value).strftime("%Y-%m-%d %H:%M:%S")
 
-if __name__ == "__main__":
-    # Use the PORT environment variable, default to 5000 if not set
-    port = int(os.environ.get("PORT", 5000))
-    app.run(debug=True, host="0.0.0.0", port=port)
+# Comment or remove the following line, as Gunicorn will handle the app execution
+# if __name__ == "__main__":
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(debug=True, host="0.0.0.0", port=port)
